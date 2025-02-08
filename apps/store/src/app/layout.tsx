@@ -1,3 +1,5 @@
+import Footer from '../components/footer';
+import Navbar from '../components/navbar';
 import './global.css';
 
 export const metadata = {
@@ -13,7 +15,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="h-screen max-w-6xl mx-auto">{children}</main>
+        <main className="h-screen max-w-7xl flex flex-col mx-auto">
+          <Navbar />
+          {children}
+          <Footer />
+        </main>
       </body>
     </html>
   );
