@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { Button } from '@h/packages/ui/button';
+import { authClient } from '../lib/auth-client';
 import { Input } from '@h/packages/ui/input';
 import { Label } from '@h/packages/ui/label';
+
 import {
   Dialog,
   DialogContent,
@@ -15,12 +17,27 @@ import {
 
 export function SignUpDialog() {
   const [open, setOpen] = useState(false);
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+    name: '',
+  });
 
-  const handleSignUp = (event: React.FormEvent) => {
+  const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Add your sign-up logic here
-    console.log('Sign up submitted');
-    setOpen(false);
+    console.log('credentials', credentials);
+    try {
+      const { data, error } = await authClient.signUp.email({
+        email: credentials.email,
+        password: credentials.password,
+        name: credentials.name,
+        image: 'https://example.com/image.png',
+      });
+      console.log('data', data);
+      console.log('better-auth error', error);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -45,6 +62,9 @@ export function SignUpDialog() {
               placeholder="John Doe"
               className="col-span-3"
               required
+              onChange={(e) =>
+                setCredentials({ ...credentials, name: e.target.value })
+              }
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -57,6 +77,9 @@ export function SignUpDialog() {
               placeholder="you@example.com"
               className="col-span-3"
               required
+              onChange={(e) =>
+                setCredentials({ ...credentials, email: e.target.value })
+              }
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -68,6 +91,9 @@ export function SignUpDialog() {
               type="password"
               className="col-span-3"
               required
+              onChange={(e) =>
+                setCredentials({ ...credentials, password: e.target.value })
+              }
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">

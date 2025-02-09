@@ -1,4 +1,6 @@
 import { Button } from '@h/packages/ui/button';
+import { headers } from 'next/headers';
+import { auth } from '../lib/auth';
 
 const products = [
   {
@@ -31,7 +33,12 @@ const products = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  console.log('session', session);
+
   return (
     <section className="flex-grow">
       <div className="relative bg-gray-900 text-white">
