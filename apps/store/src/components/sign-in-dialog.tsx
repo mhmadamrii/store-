@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Input } from '@h/packages/ui/input';
+import { authClient } from '../lib/auth-client';
 import { Label } from '@h/packages/ui/label';
 import { Button } from '@h/packages/ui/button';
 import {
@@ -15,6 +16,14 @@ import {
 
 export function SignInDialog() {
   const [open, setOpen] = useState(false);
+
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+    refetch, //refetch the session
+  } = authClient.useSession();
+  console.log('sessionlkfdas', session);
 
   const handleSignIn = (event: React.FormEvent) => {
     event.preventDefault();
