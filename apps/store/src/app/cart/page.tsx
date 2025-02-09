@@ -6,29 +6,15 @@ import { useState } from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@h/packages/ui/button';
 import { Input } from '@h/packages/ui/input';
-
-// Mock data for cart items
-const initialCartItems = [
-  {
-    id: 1,
-    name: 'Minimalist Desk Lamp',
-    price: 79.99,
-    quantity: 1,
-    image:
-      'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    id: 2,
-    name: 'Ergonomic Office Chair',
-    price: 249.99,
-    quantity: 1,
-    image:
-      'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-  },
-];
+import { Product } from '../../constants/productLists';
+import { EmptyCart } from '../../components/empty-cart';
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const itemsInCart = JSON.parse(
+    window.localStorage.getItem('my_cart') || '[]'
+  );
+
+  const [cartItems, setCartItems] = useState<Product[]>(itemsInCart);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     setCartItems(
@@ -40,6 +26,7 @@ export default function CartPage() {
 
   const removeItem = (id: number) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
+    window.localStorage.setItem('my_cart', JSON.stringify(cartItems));
   };
 
   const total = cartItems.reduce(
@@ -51,8 +38,8 @@ export default function CartPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-3xl font-bold mb-8">Your Cart</h1>
       {cartItems.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-xl mb-4">Your cart is empty</p>
+        <div className="text-center py-8 flex flex-col justify-center items-center min-h-[300px]">
+          <EmptyCart />
           <Link href="/">
             <Button>Continue Shopping</Button>
           </Link>

@@ -4,8 +4,14 @@ import { Button } from '@h/packages/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { SignInDialog } from './sign-in-dialog';
 import { SignUpDialog } from './sign-up-dialog';
+import { headers } from 'next/headers';
+import { auth } from '../lib/auth';
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <nav className="bg-white shadow-md w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,8 +31,12 @@ export default function Navbar() {
                 Cart
               </Button>
             </Link>
-            <SignInDialog />
-            <SignUpDialog />
+            {!session && (
+              <>
+                <SignInDialog />
+                <SignUpDialog />
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -49,7 +49,7 @@ export default function Footer() {
             <p className="text-gray-400 mb-4">
               Subscribe to our newsletter for the latest updates and offers.
             </p>
-            <form className="flex">
+            <form className="flex flex-col md:flex-row gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -66,7 +66,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 border-t border-gray-700 pt-8 text-center">
           <p className="text-gray-400">
-            &copy; 2023 ShopEase. All rights reserved.
+            &copy; 2025 ShopEase. All rights reserved.
           </p>
         </div>
       </div>
