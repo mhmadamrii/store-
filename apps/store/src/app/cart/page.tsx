@@ -10,10 +10,13 @@ import { Product } from '../../constants/productLists';
 import { EmptyCart } from '../../components/empty-cart';
 
 export default function CartPage() {
-  const itemsInCart = JSON.parse(
-    window.localStorage.getItem('my_cart') || '[]'
-  );
-
+  const itemsInCart = () => {
+    if (typeof window !== 'undefined') {
+      return JSON.parse(window.localStorage.getItem('my_cart') || '[]');
+    } else {
+      return [];
+    }
+  };
   const [cartItems, setCartItems] = useState<Product[]>(itemsInCart);
 
   const updateQuantity = (id: number, newQuantity: number) => {
@@ -26,7 +29,9 @@ export default function CartPage() {
 
   const removeItem = (id: number) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
-    window.localStorage.setItem('my_cart', JSON.stringify(cartItems));
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('my_cart', JSON.stringify(cartItems));
+    }
   };
 
   const total = cartItems.reduce(
